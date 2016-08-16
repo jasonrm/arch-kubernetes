@@ -11,6 +11,13 @@ if [[ " ${CEPH_OSD_NODES[@]} " =~ " ${HOSTNAME} " ]]; then
     ceph osd crush move $(hostname -s) root=default
     ceph osd crush add osd.${OSD_NUMBER} 1.0 host=$(hostname -s)
 
+    # Make sure the service is always running
+    mkdir -p /etc/systemd/system/ceph-osd@.service.d
+    cat > /etc/systemd/system/ceph-osd@.service.d/restart-always.conf <<DELIM
+[Service]
+Restart=always
+RestartSec=15s
+DELIM
     systemctl start ceph-osd@${OSD_NUMBER}.service
     systemctl enable ceph-osd@${OSD_NUMBER}.service
 fi
