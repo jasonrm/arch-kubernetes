@@ -7,7 +7,7 @@ KUBE_CLUSTER_CIDR="10.254.0.0/16"
 KUBE_SERVICE_CIDR="10.252.0.0/16"
 
 ## Users that will authenticate with tokens
-KUBE_SYSTEM_USERS=(kubelet kube-proxy kube-scheduler kube-controller-manager kube-dashboard)
+KUBE_SYSTEM_USERS=(kubelet kube-proxy kube-scheduler kube-controller-manager kube-dashboard kube-dns)
 KUBE_USERS=(jasonrm)
 
 ## kube-apiserver

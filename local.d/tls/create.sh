@@ -10,7 +10,7 @@ openssl req -x509 -new -nodes -key ${CLUSTER_NAME}-ca.key -subj "/CN=${TLS_CA_NA
 # Create server certs
 for _HOSTNAME in ${CLUSTER_NODE_HOSTNAMES[@]}; do
     SAN_IP=$(resolveip -s ${_HOSTNAME})
-    SAN="DNS:${_HOSTNAME}, IP:${SAN_IP}"
+    SAN="DNS:${_HOSTNAME},IP:${SAN_IP},IP:10.252.0.1,DNS:kubernetes,DNS:kubernetes.default,DNS:kubernetes.default.svc,DNS:kubernetes.default.svc.cluster.local"
     export SAN
     openssl genrsa -out $_HOSTNAME.key $TLS_SERVER_RSA_BITS
     openssl req -new -key $_HOSTNAME.key -subj "/CN=${_HOSTNAME}" -config $DIR/openssl.cnf -out tmp-server.csr

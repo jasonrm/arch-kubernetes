@@ -159,6 +159,27 @@ contexts:
 current-context: service-account-context
 DELIM
 
+KUBEDNS_TOKEN=$(cat /etc/kubernetes/known_tokens.csv | grep ',kube-dns,' | awk -F, '{print $1}')
+mkdir -p /var/lib/kube-dns
+cat > /var/lib/kube-dns/kubeconfig <<DELIM
+apiVersion: v1
+kind: Config
+users:
+- name: kube-dns
+  user:
+    token: ${KUBEDNS_TOKEN}
+clusters:
+- name: ${CLUSTER_NAME}
+  cluster:
+    certificate-authority: ${TLS_CA_CERT}
+contexts:
+- context:
+    cluster: ${CLUSTER_NAME}
+    user: kube-dns
+  name: service-account-context
+current-context: service-account-context
+DELIM
+
 # Configure and start services
 
 # API Server
@@ -255,6 +276,7 @@ systemctl enable kube-scheduler
 ##
 cat > /etc/kubernetes/controller-manager <<DELIM
 KUBE_CONTROLLER_MANAGER_ARGS="\
+--root-ca-file=${TLS_CA_CERT} \
 --allocate-node-cidrs=true \
 --cluster-cidr=${KUBE_CLUSTER_CIDR} \
 --cluster-name=${CLUSTER_NAME} \
