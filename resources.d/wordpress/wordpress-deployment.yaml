@@ -24,9 +24,6 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  selector:
-    matchLabels:
-      app: "wordpress"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
