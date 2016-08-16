@@ -2,13 +2,23 @@
 
 CEPH_FSID="10BA0602-8EF1-4F17-9B20-0D41345D60B2"
 
-CEPH_MON_NODES=(node01 node02 node03)
+if [[ $REMOTE -eq 1 ]]; then
+    ZFS_CEPH_FS="${ZFS_POOL_NAME}/ceph"
+fi
+
+
+# These are the "short name of the node (i.e., not an fqdn). It is NOT an IP address either."
+declare -a CEPH_MON_NODES=(node01 node02 node03)
+declare -a CEPH_OSD_NODES=(node01 node02 node03)
 
 CEPH_MON_INITIAL_MEMBERS=""
 for CEPH_MON_NODE in ${CEPH_MON_NODES[@]}; do
     CEPH_MON_INITIAL_MEMBERS="$CEPH_MON_INITIAL_MEMBERS,${CEPH_MON_NODE}"
-    CEPH_MON_NODE_IP=$(resolveip -s ${CEPH_MON_NODE})
+    CEPH_MON_NODE_IP=$(ipfor ${CEPH_MON_NODE})
     CEPH_MON_HOSTS="${CEPH_MON_HOSTS},${CEPH_MON_NODE_IP}"
 done
 CEPH_MON_INITIAL_MEMBERS=${CEPH_MON_INITIAL_MEMBERS:1}
 CEPH_MON_HOSTS=${CEPH_MON_HOSTS:1}
+
+CEPH_PUBLIC_CIDR="10.76.35.0/20"
+CEPH_CLUSTER_CIDR="10.76.35.0/20"
