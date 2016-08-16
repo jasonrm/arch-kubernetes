@@ -216,6 +216,8 @@ cat > /etc/kubernetes/kubelet <<DELIM
 KUBELET_ARGS="\
 --api-servers=${KUBE_API_SERVERS} \
 --configure-cbr0=true \
+--cluster-dns=10.252.0.10 \
+--cluster-domain=cluster.local \
 --kubeconfig=/var/lib/kubelet/kubeconfig \
 --register-node \
 "
