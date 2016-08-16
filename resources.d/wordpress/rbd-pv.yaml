@@ -21,7 +21,7 @@ spec:
       name: ceph-secret
     fsType: ext4
     readOnly: false
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -46,4 +46,4 @@ spec:
       name: ceph-secret
     fsType: ext4
     readOnly: false
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
